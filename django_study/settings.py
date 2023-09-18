@@ -29,3 +29,7 @@ TEMPLATES=[
 
 STATIC_URL = '/static/' 
 
+
+# 127.0.0.1:8000/admin으로 debug-toolbar 나타나는지 확인가능
+
+
