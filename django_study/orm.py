@@ -17,3 +17,17 @@ books = Book.objects.all()
 ebooks = Ebook.objects.all()
 
 books.union(ebooks)
+
+# union 다른 사용법
+
+data3 = union(books,ebooks)
+
+
+#30세 이상 멤버 정보 가져오기
+
+#gte : 이상의 의미
+#gt: greater than : >
+#lte : less than or equal : <=
+#lt : less than : <
+
+Member.objects.filter(age__gte=30)
