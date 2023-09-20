@@ -33,3 +33,26 @@ data3 = union(books,ebooks)
 Member.objects.filter(age__gte=30)
 
 
+
+
+# get 과 filter의 차이
+
+# get
+
+# 한 개의 데이터를 추출할때 사용
+
+# Filter
+
+# 여러개의 데이터를 추출할떄 사용
+
+
+# 정렬하기
+
+# SQL
+
+#SELECT * FROM TABLE1 ORDER BY(create_date)
+
+# orm
+
+# Model.objects.all().order_by('create_date')
+
