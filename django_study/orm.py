@@ -31,3 +31,5 @@ data3 = union(books,ebooks)
 #lt : less than : <
 
 Member.objects.filter(age__gte=30)
+
+
