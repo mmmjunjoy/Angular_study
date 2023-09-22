@@ -19,10 +19,26 @@ def loginsaladlab(request):
 
     okay = False
     if request.method == "POST":
-        username_table = User.objects.filter("user_name")
-        password_table = User.objects.filter("password")
+        username_list = User.objects.filter("user_name")
+        password_list = User.objects.filter("password")
         username = request.POST['user_name']
         password = request.POST['password']
+
+        for i in username_list:
+            if i == username:
+                for j in password_list:
+                    if j==password:
+                        return "okay you are saladman"
+                    else:
+                        return "retry  enter your password"
+                    
+            
+            else:
+                return "retry your id and password please"
+            
+            
+                    
+        
         
         
         # authenticate방법 - 사용하지 x 예정
@@ -39,6 +55,5 @@ def loginsaladlab(request):
         
 
 
-#등록
 
 
