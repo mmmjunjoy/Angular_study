@@ -1,0 +1,9 @@
+{%for todo in todos %}
+<h2>{{todo.title}}</h2>
+<h2>{{todo.author}}</h2>
+<h2>{{todo.completed}}</h2>
+
+{% if todo.completed == False %}
+<form action="" {5 url `todos:completed` todo.id %}" method="POST">
+  {% csrf_token %}<buttonl>완료</buttonl>
+</form>
