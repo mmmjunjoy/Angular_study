@@ -1,0 +1,13 @@
+<!-- angular를 사용한 todo를 위한 앎의 요소 1 -->
+
+
+<div class="main">
+  <h1>My To Do List</h1>
+  <h2>What would you like to do today?</h2>
+
+  <ul>
+    <li *ngFor="let item of items">{{item.description}}</li>
+  </ul>
+</div>
+
+<!--ngFor 에 의해서 목록들이 나열된다. -->
