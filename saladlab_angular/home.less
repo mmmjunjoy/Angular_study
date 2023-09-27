@@ -1,0 +1,48 @@
+#home {
+  font-family: "Arimo", sans-serif;
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 400;
+  font-size: 1.4em;
+
+  .hello {
+    margin-bottom: 10px;
+  }
+
+  .saladlab {
+    font-weight: 600;
+    animation: heart-beat 1s ease-in-out infinite;
+    cursor: pointer;
+  }
+  .loginbutton {
+    margin: 25px 40px;
+    width: 268px;
+    height: 32px;
+    background-color: rgb(141, 214, 147);
+    border: none;
+    font-size: 15px;
+    font-weight: bolder;
+    color: rgb(248, 251, 252);
+    cursor: pointer;
+  }
+  @keyframes heart-beat {
+    0% {
+      transform: scale(1);
+    }
+    25% {
+      transform: scale(1.02);
+    }
+    50% {
+      transform: scale(1);
+    }
+    75% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
