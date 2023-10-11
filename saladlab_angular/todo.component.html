@@ -1,0 +1,92 @@
+<div id="todo">
+  <div>
+    <header class="todoheader">
+      <p class="headertext">I am Salad Man</p>
+    </header>
+
+    <main class="maintodo">
+      <header class="mainheader">
+        <p class="titlename">To-Do list</p>
+        <button (click)="gotodopopup()" class="NewTaskbt">
+          + New Task
+        </button>
+      </header>
+
+      <div class="plan">
+        <p style="font-size: 20px; font-weight: bold;">plan</p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:100px;">Status</th>
+              <th style="width:450px;">Title</th>
+              <th style="width:150px;">Due date</th>
+              <th style="width:80px;">Delete</th>
+            </tr>
+          </thead>
+
+          <!-- ngFor 사용하여 db에 있는 data 화면에 띄우기 & ng-container 사용-->
+          <ng-container *ngFor="let tdmd of TodoMainData">
+
+            <tr>
+              <td>{{tdmd[1]}}</td>
+              <td>{{tdmd[2]}}</td>
+              <td>{{tdmd[4]}}</td>
+              <td><img src="assets/image/trash.jpg" style="width:50px; padding-left:10px;"></td>
+              <!-- <td>delete - {{tdmd[0]}}</td>   -->
+            </tr>
+
+          </ng-container>
+
+
+
+          <style>
+            thead {
+              width: 100%;
+              height: 28px;
+              background-color: rgba(242, 242, 242, 1);
+              border: none;
+              text-align: left;
+            }
+          </style>
+
+        </table>
+      </div>
+      <div class="success">
+        <p style="font-size: 20px; font-weight: bold;">Done</p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:100px;">Status</th>
+              <th style="width:450px;">Title</th>
+              <th style="width:150px;">Due date</th>
+              <th style="width:80px;">Delete</th>
+            </tr>
+          </thead>
+          <style>
+            thead {
+              width: 100%;
+              height: 28px;
+              background-color: rgba(242, 242, 242, 1);
+              border: none;
+              text-align: left;
+            }
+
+            th {
+              padding-left: 10px;
+            }
+          </style>
+
+        </table>
+
+      </div>
+
+
+
+
+
+    </main>
+
+
+
+  </div>
+</div>
