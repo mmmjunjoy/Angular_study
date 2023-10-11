@@ -10,7 +10,7 @@ def index(request):
     return HttpResponse("Hello, world. ")
 
 
-# 0. todo data front에 보내주기
+# 0. ToDo Get API / todo data front에 보내주기
 
 # todo/sendtodo
 def sendtododb(request):
@@ -18,6 +18,19 @@ def sendtododb(request):
     if request.method == 'GET':
 
         print("get_success_sendtododata")
+
+        # list 사용 : QuerySet 과 JSON 불일치 오류 해결
+        TodoDB = list(TodoModel.objects.all().values_list("status","title","due_date"))
+
+        print("전체 데이터: ", TodoDB)
+
+        Data = {
+            'statusft' : TodoDB
+        }
+
+        return JsonResponse(Data)
+
+
 
 
 # 1. 할일 생성
@@ -55,6 +68,11 @@ def todocreate(request):
 
         return JsonResponse(successdata)
         
+
+
+
+
+
 
 
 
