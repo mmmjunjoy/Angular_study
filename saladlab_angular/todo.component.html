@@ -20,22 +20,25 @@
               <th style="width:100px;">Status</th>
               <th style="width:450px;">Title</th>
               <th style="width:150px;">Due date</th>
-              <th style="width:80px;">Delete</th>
+              <th style="width:70px;">Delete</th>
             </tr>
           </thead>
 
           <!-- ngFor 사용하여 db에 있는 data 화면에 띄우기 & ng-container 사용-->
-          <ng-container *ngFor="let tdmd of TodoMainData">
-
+          <ng-container *ngFor="let tdmd of todomaindata">
             <tr>
               <td>{{tdmd[1]}}</td>
               <td>{{tdmd[2]}}</td>
               <td>{{tdmd[4]}}</td>
-              <td><img src="assets/image/trash.jpg" style="width:50px; padding-left:10px;"></td>
-              <!-- <td>delete - {{tdmd[0]}}</td>   -->
+              <!-- data- 사용하여 이미지요소 안에 데이터(id)를 담기 - 클릭시 front에서 데이터사용 -->
+              <td id="todoids" style="cursor: pointer;"><img (click)="deleteToDo(tdmd[0])" src=" assets/image/trash.jpg"
+                  style="width:50px; padding-left:10px;">
+              </td>
             </tr>
-
           </ng-container>
+
+
+
 
 
 
