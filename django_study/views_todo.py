@@ -10,7 +10,7 @@ def index(request):
     return HttpResponse("Hello, world. ")
 
 
-# 0. ToDo Get API / todo data front에 보내주기
+# 0. todo data front에 보내주기
 
 # todo/sendtodo
 def sendtododb(request):
@@ -19,16 +19,15 @@ def sendtododb(request):
 
         print("get_success_sendtododata")
 
-        # list 사용 : QuerySet 과 JSON 불일치 오류 해결
-        TodoDB = list(TodoModel.objects.all().values_list("status","title","due_date"))
+        TodoDB = list(TodoModel.objects.all().values_list('id','status','title','content','due_date' ))
 
         print("전체 데이터: ", TodoDB)
 
-        Data = {
-            'statusft' : TodoDB
+        data = {
+            'tdmaindata' : TodoDB
         }
 
-        return JsonResponse(Data)
+        return JsonResponse(data)
 
 
 
@@ -70,16 +69,6 @@ def todocreate(request):
         
 
 
-
-
-
-
-
-
-
-
-
-
 # 2. 할일 삭제
 
 # todo/delete
@@ -88,7 +77,28 @@ def tododelete(request):
 
     if request.method == 'POST':
 
+        # 삭제할 todo pk id받기
+        TodoDeletePayload = json.loads(request.body)
+        TodoPkId = TodoDeletePayload['todopkid']
+        
+        print('id:', TodoPkId)
+
+        # 행 삭제하기
+
+        deletetodo = TodoModel.objects.filter(id = TodoPkId)
+
+        print("삭제될 행 추출" , deletetodo)
+
+        GoDeleteToDo = deletetodo.delete()
+
         print("post_success_delete")
+
+        data = {
+            'success' : True
+        }
+        return JsonResponse(data)
+
+
 
 
         
