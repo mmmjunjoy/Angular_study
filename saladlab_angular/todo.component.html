@@ -18,9 +18,10 @@
           <thead>
             <tr>
               <th style="width:100px;">Status</th>
-              <th style="width:450px;">Title</th>
+              <th style="width:400px;">Title</th>
               <th style="width:150px;">Due date</th>
-              <th style="width:70px;">Delete</th>
+              <th style="width:60px;">modify</th>
+              <th style="width:60px;">Delete</th>
             </tr>
           </thead>
 
@@ -30,17 +31,19 @@
               <td>{{tdmd[1]}}</td>
               <td>{{tdmd[2]}}</td>
               <td>{{tdmd[4]}}</td>
-              <!-- data- 사용하여 이미지요소 안에 데이터(id)를 담기 - 클릭시 front에서 데이터사용 -->
+
+              <!-- data- 사용하여 이미지요소 안에 데이터(id)를 담기--(x:정적인 형태의 데이터는 담겨지는거같으나 , 동적인 형태의 데이터는 담겨지지않는 현상) -->
+
+              <!-- 대체방안: deleteToDo함수에 인자값으로 동적인 변수(tdmd[0])를 넘겨주는 방법 사용 -->
+              <td id="todoids" style="cursor: pointer;"><img (click)="modifyToDo(tdmd[0])"
+                  src=" assets/image/modify.png" style="width:40px; height:37px; padding-left:20px;">
+              </td>
+
               <td id="todoids" style="cursor: pointer;"><img (click)="deleteToDo(tdmd[0])" src=" assets/image/trash.jpg"
-                  style="width:50px; padding-left:10px;">
+                  style="width:50px; padding-left:10px; padding-top:6px;">
               </td>
             </tr>
           </ng-container>
-
-
-
-
-
 
           <style>
             thead {
@@ -54,6 +57,10 @@
 
         </table>
       </div>
+
+      <ng-container *ngIf="modifystatus">
+        modify 변수 true로 인해 popup창 열릴 예정
+      </ng-container>
       <div class="success">
         <p style="font-size: 20px; font-weight: bold;">Done</p>
         <table>
