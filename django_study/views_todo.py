@@ -10,7 +10,7 @@ def index(request):
     return HttpResponse("Hello, world. ")
 
 
-# 0. todo data front에 보내주기
+# 0. todo data front에 보내주기  -> serialize 로 코드 변경 
 
 # todo/sendtodo
 def sendtododb(request):
@@ -28,6 +28,50 @@ def sendtododb(request):
         }
 
         return JsonResponse(data)
+    
+
+# todo/sendtodopopup
+# todopopup - 해당 id 값에 맞는 값들 전송
+
+def sendtodopopup(request):
+
+    if request.method == 'POST':
+
+        print("get_success_sendpopup")
+
+        # front에서 보낸 todo id 값 
+        popupidPayload = json.loads(request.body)
+        tdid = popupidPayload['tdpopupid']
+        print("front에서 넘겨준 tododid: " , tdid)
+
+        # todoDB 에서 usetdid와 동일한 값의 행 추출
+
+        tddata = TodoModel.objects.filter(id = tdid).values()
+        
+
+        # front에 넘겨줄 data
+
+        todocurrentdata = {
+            'tdcurrentstatus' : tddata[0]['status'] ,
+            'tdcurrenttitle' : tddata[0]['title'],
+            'tdcurrentcontent' : tddata[0]['content'],
+            'tdcurrentduedate' : tddata[0]['due_date']
+        }
+
+
+        print("추출된 해당 데이터:" , todocurrentdata)
+
+        return JsonResponse(todocurrentdata)
+
+        
+        
+
+
+  
+
+
+
+
 
 
 
@@ -101,21 +145,10 @@ def tododelete(request):
 
 
 
-        
 
 
 
 
-# 3. 할일 수정
-
-# todo/modify
-
-
-def todomodify(request):
-
-    if request.method == 'POST':
-
-        print("post_success_modify")
 
 
 
