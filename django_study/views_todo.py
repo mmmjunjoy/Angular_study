@@ -143,6 +143,86 @@ def tododelete(request):
         return JsonResponse(data)
 
 
+# 3. 할일 수정
+
+# todo/modify
+
+
+def todomodify(request):
+
+    if request.method == 'PUT':
+
+        print("post_success_modify")
+
+        modifyPayload = json.loads(request.body)
+
+        print("modifypayload : ", modifyPayload)
+
+        #  front에서 수정된 값을 비교하고 바뀌었을 경우 바뀐 값 저장 ,
+        #  수정된 값이 null일 경우 -> 원래의 값으로 저장
+
+        # 1. 해당 id에 맞는 현재 값 들
+        currentToDo = TodoModel.objects.filter(id = modifyPayload['tdmdid']).values()
+
+        # 2. 각 컬럼 (4가지 - status , title , content , due_date ) 비교
+
+        newstatus = modifyPayload['tdmdstatus']
+        newtitle = modifyPayload['tdmdtitle']
+        newcontent = ''
+        newduedate = ''
+
+        # 2-1 -> status 비교             -> 수정 ok
+        if modifyPayload['tdmdstatus'] == '':
+            newstatus = currentToDo[0]['status'] 
+            print("status is same")
+
+        else : 
+            print( "status is modify")
+      
+ 
+        # 2-2 -> title 비교      -> 수정  ok
+        if modifyPayload['tdmdtitle'] == '':
+            newtitle = currentToDo[0]['title']
+            print("title is same")
+          
+        else : 
+            print( "title is modify")
+
+
+        # 2-3 -> content 비교   -> 수정 ok
+        if modifyPayload['tdmdcontent'] :
+            newcontent = modifyPayload['tdmdcontent']
+           
+        else :
+            newcontent = currentToDo[0]['content']
+            print("content is same")
+         
+        # 2-4 -> due date 비교   -> 수정 ok
+        if modifyPayload['tdmdduedate'] == '':
+            newduedate = currentToDo[0]['due_date']
+            print("duedate is same")
+        else :
+
+            newduedate = modifyPayload['tdmdduedate']
+
+
+        # 새로운 값으로 대체
+
+        print("--------------------------------------------------------------------")
+
+        print('새로운 값: ' , newstatus, newtitle,newcontent,newduedate )
+
+        modify_todo= TodoModel.objects.filter(id = modifyPayload['tdmdid']).update(status =newstatus  , title =newtitle , content =newcontent , due_date=newduedate)
+
+        print("변경완료되었습니다 -> " , modify_todo)
+
+
+        data = {
+            'resultmodify' : 0
+        }
+
+        return JsonResponse(data)
+
 
 
 
