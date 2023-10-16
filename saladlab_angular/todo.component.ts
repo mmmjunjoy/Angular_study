@@ -12,7 +12,18 @@ export class TodoComponent implements OnInit {
   todomaindata = "";
   todoidpk = "";
 
-  ids = document.getElementById("todoids");
+  // todo 상태 결정변수s
+  originalstatus = true;
+
+  // popup상태 결정변수s
+  createpopup = false;
+  updatepopup = true;
+
+  // popup 에게 넘겨줄 현재 todo데이터
+  transPopupStatus = false;
+  transPopupTitle = "";
+  transPopupContent = "";
+  transPopupDuedate = "";
 
   constructor(private apiService: ApiService, private router: Router) {}
 
@@ -54,8 +65,43 @@ export class TodoComponent implements OnInit {
       );
   }
 
+  // modifybutton을 클릭하였을때 ,
+  // 1.popup창으로 전환,
+
+  modifyToDo(id: string) {
+    console.log("modify", id);
+    this.todoidpk = id;
+    this.originalstatus = false;
+    this.postToDoPopup();
+  }
+
   //페이지 로딩될떄마다 db에서 todo data불러오기
 
+  backtodo() {
+    this.originalstatus = true;
+  }
+
+  //todo 에서 modify버튼 클릭시 해당 todoid에 맞는 값 back에 전송
+
+  postToDoPopup() {
+    this.apiService
+      .create<any>("todo/sendtodopopup", {
+        tdpopupid: this.todoidpk,
+      })
+      .subscribe(
+        (json) => {
+          console.log("popupresult", json);
+          this.transPopupStatus = json["tdcurrentstatus"];
+          this.transPopupTitle = json["tdcurrenttitle"];
+          this.transPopupContent = json["tdcurrentcontent"];
+          this.transPopupDuedate = json["tdcurrentduedate"];
+          console.log("success", this.transPopupStatus);
+        },
+        (error) => {
+          console.log("error");
+        }
+      );
+  }
   ngOnInit(): void {
     this.getToDo();
   }
