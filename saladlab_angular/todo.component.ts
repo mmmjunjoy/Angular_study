@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { ApiService } from "../service/api.service";
 import { Router } from "@angular/router";
 
+import { SessionService } from "../service/session.service";
+
 @Component({
   selector: "app-todo",
   templateUrl: "./todo.component.html",
@@ -29,7 +31,14 @@ export class TodoComponent implements OnInit {
   transPopupContent = "";
   transPopupDuedate = "";
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  // session 사용할 변수
+  useridtd = this.session.getInfo();
+
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private session: SessionService
+  ) {}
 
   // todo 생성 팝업으로 이동
   gotodopopup() {
@@ -39,18 +48,22 @@ export class TodoComponent implements OnInit {
   // todolist db에 정보 가져오는 함수 (GET)
 
   getToDo() {
-    this.apiService.get<any>("todo/sendtodo").subscribe(
-      (json) => {
-        console.log("result_todo_data:", json);
-        this.todomaining = json["tdmaining"];
-        this.todomaindone = json["tdmaindone"];
-        console.log("tdmding", this.todomaining);
-        console.log("tdmddone", this.todomaindone);
-      },
-      (error) => {
-        console.log("error");
-      }
-    );
+    this.apiService
+      .create<any>("todo/sendtodo", {
+        UserIdtd: this.useridtd,
+      })
+      .subscribe(
+        (json) => {
+          console.log("result_todo_data:", json);
+          this.todomaining = json["tdmaining"];
+          this.todomaindone = json["tdmaindone"];
+          console.log("tdmding", this.todomaining);
+          console.log("tdmddone", this.todomaindone);
+        },
+        (error) => {
+          console.log("error");
+        }
+      );
   }
   // id 인자값으로 html 파일의 (tdmd[0]을 받는다)
   deleteToDo(id: string) {
@@ -128,6 +141,14 @@ export class TodoComponent implements OnInit {
         }
       );
   }
+
+  // Log Out -> session  정보값 remove , 이동하기 -> 홈으로
+
+  logout() {
+    this.session.logOut();
+    this.router.navigate([""]);
+  }
+
   ngOnInit(): void {
     this.getToDo();
   }
