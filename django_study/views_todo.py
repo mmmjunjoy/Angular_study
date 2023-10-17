@@ -19,12 +19,16 @@ def sendtododb(request):
 
         print("get_success_sendtododata")
 
-        TodoDB = list(TodoModel.objects.all().values_list('id','status','title','content','due_date' ))
+        TodoDBing = list(TodoModel.objects.filter(status = False).values_list('id','status','title','content','due_date' ))
+        TodoDBdone = list(TodoModel.objects.filter(status = True).values_list('id','status','title','content','due_date' ))
 
-        print("전체 데이터: ", TodoDB)
+        print("현재 진행중: ", TodoDBing)
+        print("------------------------------------------")
+        print("완료 : ", TodoDBdone)
 
         data = {
-            'tdmaindata' : TodoDB
+            'tdmaining' : TodoDBing,
+            'tdmaindone' : TodoDBdone,
         }
 
         return JsonResponse(data)
@@ -223,6 +227,65 @@ def todomodify(request):
 
         return JsonResponse(data)
 
+# 4. 상태 수정
+
+# todo/statusmodify
+
+def statusmodify(request):
+
+    if request.method == "PUT":
+
+        statusmodifyPayload = json.loads(request.body)
+
+        statusmodifycurrent = TodoModel.objects.filter(id = statusmodifyPayload['statusid']).values('status')
+
+        print("status 추출" ,statusmodifycurrent)
+
+
+        # 클릭시 반대로 바꿔서 상태저장하기
+
+        currentstatus = statusmodifycurrent[0]
+
+        print("현상태값" ,currentstatus)
+
+        newstatusTrue = True
+        newstatusFalse = False
+
+        data = {
+            "result" : 1
+        }
+
+        
+        # status 현재 상태 체크 후 반대상태로 업데이트 한 후 프론트로 응답하기
+        
+        if statusmodifycurrent[0]['status'] == False:
+            updatestatus = TodoModel.objects.filter(id = statusmodifyPayload['statusid']).update(status = newstatusTrue)
+            print("완료상태로 변경완료")
+            return JsonResponse(data)
+        
+        else :
+            print("not")
+
+ 
+            
+
+        if statusmodifycurrent[0]['status'] == True:
+            updatestatus = TodoModel.objects.filter(id = statusmodifyPayload['statusid']).update(status = newstatusFalse)
+            print("미완료 상태로 변경완료")
+            return JsonResponse(data)
+        else :
+            print("not")
+            
+            
+
+     
+
+       
+
+
+  
+        
+        
 
 
 
