@@ -15,12 +15,14 @@ def index(request):
 # todo/sendtodo
 def sendtododb(request):
 
-    if request.method == 'GET':
+    if request.method == 'POST':
 
+        useridPayload  = json.loads(request.body)
+        ThisUserId = useridPayload['UserIdtd']
         print("get_success_sendtododata")
 
-        TodoDBing = list(TodoModel.objects.filter(status = False).values_list('id','status','title','content','due_date' ))
-        TodoDBdone = list(TodoModel.objects.filter(status = True).values_list('id','status','title','content','due_date' ))
+        TodoDBing = list(TodoModel.objects.filter(user_id=ThisUserId, status = False).values_list('id','status','title','content','due_date' ))
+        TodoDBdone = list(TodoModel.objects.filter(user_id=ThisUserId,  status = True).values_list('id','status','title','content','due_date' ))
 
         print("현재 진행중: ", TodoDBing)
         print("------------------------------------------")
@@ -94,18 +96,20 @@ def todocreate(request):
 
         TodoPayload = json.loads(request.body)
         print("payload" , TodoPayload)
+
+        tduserid = TodoPayload['userids']
         tdstatus = TodoPayload["tdstatus"]
         tdtitle = TodoPayload["tdtitle"]
         tdcontent = TodoPayload["tdcontent"]
         tdduedate = TodoPayload["tdduedate"]
 
 
-        print("todo data: " , tdstatus , tdtitle , tdcontent, tdduedate )
+        print("todo data: " , tduserid, tdstatus , tdtitle , tdcontent, tdduedate )
 
 
         # todo data저장
 
-        new_todo = TodoModel.objects.create(status = tdstatus , title =tdtitle , content = tdcontent, due_date=tdduedate )
+        new_todo = TodoModel.objects.create(user_id = tduserid ,status = tdstatus , title =tdtitle , content = tdcontent, due_date=tdduedate )
 
         print("새로운 todo저장되었습니다.")
 
