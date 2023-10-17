@@ -108,10 +108,10 @@ def login(request):
     UsernameSet = UserSignup.objects.all().values_list("user_name" , flat = True)
     print(UsernameSet)
 
-    #2.DB password 확인
+    #2.DB에서 해당 user -> password 확인
 
-    PasswordSet = UserSignup.objects.all().values_list("password", flat= True)
-    print(PasswordSet)
+    Passwordreal = UserSignup.objects.filter(user_name = LoginUsername).values_list("password", flat= True)
+    print("아사람의 패스워드: " ,Passwordreal[0])
 
     #2-2 -> session이용하기 위한 해당 username에 대한 userid값 넘겨주기
     Userids = UserSignup.objects.filter(user_name = LoginUsername).values("id")
@@ -134,10 +134,11 @@ def login(request):
     }
 
 
+    # 수정  -> passwordset -> passwordreal(하나의 값)
+
     for i in UsernameSet:
       if i == LoginUsername:
-        for j in PasswordSet:
-          if j == LoginPassword:
+        if Passwordreal[0] == LoginPassword:
             return JsonResponse(loginsuccess )
         return JsonResponse(loginpasswordfail)
       
