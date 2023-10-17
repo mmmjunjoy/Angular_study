@@ -9,8 +9,12 @@ import { Router } from "@angular/router";
   providers: [ApiService],
 })
 export class TodoComponent implements OnInit {
-  todomaindata = "";
+  todomaining = "";
+  todomaindone = "";
+
   todoidpk = "";
+
+  todoidstatus = "";
 
   // todo 상태 결정변수s
   originalstatus = true;
@@ -38,8 +42,10 @@ export class TodoComponent implements OnInit {
     this.apiService.get<any>("todo/sendtodo").subscribe(
       (json) => {
         console.log("result_todo_data:", json);
-        this.todomaindata = json["tdmaindata"];
-        console.log("tdmd", this.todomaindata);
+        this.todomaining = json["tdmaining"];
+        this.todomaindone = json["tdmaindone"];
+        console.log("tdmding", this.todomaining);
+        console.log("tdmddone", this.todomaindone);
       },
       (error) => {
         console.log("error");
@@ -73,6 +79,26 @@ export class TodoComponent implements OnInit {
     this.todoidpk = id;
     this.originalstatus = false;
     this.postToDoPopup();
+  }
+
+  // status 버튼 check 시 status값 변환
+
+  checkstatus(id: string) {
+    this.todoidstatus = id;
+    console.log("checkstatus", id);
+    this.apiService
+      .update<any>("todo/statusmodify", {
+        statusid: this.todoidstatus,
+      })
+      .subscribe(
+        (json) => {
+          console.log("status success");
+          location.reload();
+        },
+        (error) => {
+          console.log("error");
+        }
+      );
   }
 
   //페이지 로딩될떄마다 db에서 todo data불러오기
