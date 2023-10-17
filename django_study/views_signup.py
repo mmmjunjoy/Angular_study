@@ -45,39 +45,46 @@ def signup(request):
 
     # 1.1 현재 table의 username 모두 가져오기
     usernames = UserSignup.objects.all().values_list('user_name' , flat = True)
-    print(usernames)
+    print("현재 usrname:", usernames)
 
 
     # ---프론트에게 던져줄 값---
 
+    # -> 0,1 에서 null값 처리를 위해 경우를 세분화 (성공,중복에러,null에러)
+
     success = {
-      'result': True
+      'result': '0'
 
     }
 
-    fail  = {
-      'result' : False
+    DuplicationFail = {
+      'result' : '1'
     }
 
-    print("프론트값전달" , success, fail)
+    NullFail ={
+      'result' : '2'
+    }
+
+    # print("프론트값전달" , success, DuplicationFail )
+
+    # 1.2.1  -> null값은 불통처리
+
+    if (username == '') or (password == ''):
+      return JsonResponse(NullFail)
     
     # 1.2 중복체크 통과 -> 저장  , 불통 -> 경고메세지
     for i in usernames:
       if i == username:
-
-        # 불통 -> 경고메세지 실행 및 http 오류 처리
-        print("---error: 사용자 정보가 중복으로 존재합니다---")
-        return JsonResponse(fail )
-
-
+          # 불통 -> 경고메세지 실행 및 http 오류 처리
+          print("---error: 사용자 정보가 중복으로 존재합니다---")
+          return JsonResponse(DuplicationFail )
     # 통과 -> 저장 및 확인메세지 출력
     new_user = UserSignup.objects.create(user_name= username , password =password )
     print("---success: 저장이 되었습니다---")
     return JsonResponse(success )
 
-    
-       
-        
+
+    # 예외처리
     # except Exception as e:
     #   print("error", e)
 
