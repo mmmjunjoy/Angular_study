@@ -12,7 +12,7 @@ def index(request):
 
 # 0. todo data front에 보내주기  -> serialize 로 코드 변경 
 
-# todo/sendtodo
+# todo/sendtodo   -> plan에 대한 
 def sendtododb(request):
 
     if request.method == 'POST':
@@ -21,15 +21,59 @@ def sendtododb(request):
         ThisUserId = useridPayload['UserIdtd']
         print("get_success_sendtododata")
 
-        TodoDBing = list(TodoModel.objects.filter(user_id=ThisUserId, status = False).values_list('id','status','title','content','due_date' ))
-        TodoDBdone = list(TodoModel.objects.filter(user_id=ThisUserId,  status = True).values_list('id','status','title','content','due_date' ))
+
+        #due_date정렬을 여기서 관리를 해줘야할거같다.
+        #button - on -> order_by().reverse() 사용
+        #button - off -> order_by() 만 사용
+
+        button = useridPayload['duedatebtn']
+        print("duedate" , button)
+
+        if button == 0:
+            TodoDBing = list(TodoModel.objects.order_by('due_date').filter(user_id=ThisUserId, status = False).values_list('id','status','title','content','due_date' ))
+      
+        
+        else :
+            TodoDBing = list(TodoModel.objects.order_by('due_date').reverse().filter(user_id=ThisUserId, status = False).values_list('id','status','title','content','due_date' ))
+       
+
 
         print("현재 진행중: ", TodoDBing)
-        print("------------------------------------------")
+    
+        data = {
+            'tdmaining' : TodoDBing,
+        }
+
+        return JsonResponse(data)
+    
+# todo/sendtodo2  -> done에 대한
+
+def sendtododb2(request):
+
+    if request.method == 'POST':
+
+        useridPayload  = json.loads(request.body)
+        ThisUserId = useridPayload['UserIdtd']
+        print("get_success_sendtododata")
+
+
+        #due_date정렬을 여기서 관리를 해줘야할거같다.
+        #button - on -> order_by().reverse() 사용
+        #button - off -> order_by() 만 사용
+
+        button = useridPayload['duedatebtn']
+        print("duedate" , button)
+
+        if button == 0:
+            TodoDBdone = list(TodoModel.objects.order_by('due_date').filter(user_id=ThisUserId,  status = True).values_list('id','status','title','content','due_date' ))
+        
+        else :
+            TodoDBdone = list(TodoModel.objects.order_by('due_date').reverse().filter(user_id=ThisUserId,  status = True).values_list('id','status','title','content','due_date' ))
+
+
         print("완료 : ", TodoDBdone)
 
         data = {
-            'tdmaining' : TodoDBing,
             'tdmaindone' : TodoDBdone,
         }
 
@@ -279,9 +323,13 @@ def statusmodify(request):
             return JsonResponse(data)
         else :
             print("not")
-            
-            
 
+
+
+
+        # TotalDB = TodoModel.objects.all().reverse().update()
+
+        
      
 
        
