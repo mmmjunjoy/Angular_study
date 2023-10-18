@@ -34,6 +34,12 @@ export class TodoComponent implements OnInit {
   // session 사용할 변수
   useridtd = this.session.getInfo();
 
+  // duedate 정렬 버튼 변수
+  duedatebtnon = "1";
+
+  // button result (무한변경에 사용)
+  resultduedatebtn = 0;
+
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -47,17 +53,33 @@ export class TodoComponent implements OnInit {
 
   // todolist db에 정보 가져오는 함수 (GET)
 
-  getToDo() {
+  getToDoPlan() {
     this.apiService
       .create<any>("todo/sendtodo", {
         UserIdtd: this.useridtd,
+        duedatebtn: 0,
       })
       .subscribe(
         (json) => {
           console.log("result_todo_data:", json);
           this.todomaining = json["tdmaining"];
-          this.todomaindone = json["tdmaindone"];
           console.log("tdmding", this.todomaining);
+        },
+        (error) => {
+          console.log("error");
+        }
+      );
+  }
+  getToDoDone() {
+    this.apiService
+      .create<any>("todo/sendtodo2", {
+        UserIdtd: this.useridtd,
+        duedatebtn: 0,
+      })
+      .subscribe(
+        (json) => {
+          console.log("result_todo_data:", json);
+          this.todomaindone = json["tdmaindone"];
           console.log("tdmddone", this.todomaindone);
         },
         (error) => {
@@ -65,6 +87,63 @@ export class TodoComponent implements OnInit {
         }
       );
   }
+
+  // due date -> 이른 순 또는 늦은순에 따라 정렬하기 || default -> 이른순  , 클릭시 반대값으로 정렬
+  lineupDueDatePlan() {
+    this.apiService
+      .create<any>("todo/sendtodo", {
+        UserIdtd: this.useridtd,
+        duedatebtn: 1,
+      })
+      .subscribe(
+        (json) => {
+          console.log("successduedate");
+          this.todomaining = json["tdmaining"];
+          this.todomaindone = json["tdmaindone"];
+        },
+        (error) => {
+          console.log("duedateerror");
+        }
+      );
+  }
+  lineupDueDateDone() {
+    this.apiService
+      .create<any>("todo/sendtodo2", {
+        UserIdtd: this.useridtd,
+        duedatebtn: 1,
+      })
+      .subscribe(
+        (json) => {
+          console.log("successduedate");
+          this.todomaindone = json["tdmaindone"];
+        },
+        (error) => {
+          console.log("duedateerror");
+        }
+      );
+  }
+
+  // btn의 값이 짝수인지 홀수인지에 따라 다른 정렬함수 호출
+  resultplanduedate() {
+    this.resultduedatebtn += 1;
+    if (this.resultduedatebtn % 2 == 0) {
+      this.getToDoPlan();
+    } else {
+      this.lineupDueDatePlan();
+    }
+    console.log(this.resultduedatebtn);
+  }
+
+  resultdoneduedate() {
+    this.resultduedatebtn += 1;
+    if (this.resultduedatebtn % 2 == 0) {
+      this.getToDoDone();
+    } else {
+      this.lineupDueDateDone();
+    }
+    console.log(this.resultduedatebtn);
+  }
+
   // id 인자값으로 html 파일의 (tdmd[0]을 받는다)
   deleteToDo(id: string) {
     console.log(id);
@@ -76,7 +155,8 @@ export class TodoComponent implements OnInit {
       .subscribe(
         (json) => {
           console.log("gooddelete");
-          this.getToDo();
+          this.getToDoPlan();
+          this.getToDoDone();
         },
         (error) => {
           console.log("error");
@@ -150,6 +230,7 @@ export class TodoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getToDo();
+    this.getToDoPlan();
+    this.getToDoDone();
   }
 }
