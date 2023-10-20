@@ -3,6 +3,7 @@ from django.http import HttpResponse ,JsonResponse
 from .models import TodoModel
 import urllib.request
 import json
+from datetime import datetime
 
 
 
@@ -29,6 +30,7 @@ def sendtododb(request):
         button = useridPayload['duedatebtn']
         print("duedate" , button)
 
+        # 정렬에 -> order_by() , reverse() 사용 
         if button == 0:
             TodoDBing = list(TodoModel.objects.order_by('due_date').filter(user_id=ThisUserId, status = False).values_list('id','status','title','content','due_date' ))
       
@@ -105,7 +107,9 @@ def sendtodopopup(request):
             'tdcurrentstatus' : tddata[0]['status'] ,
             'tdcurrenttitle' : tddata[0]['title'],
             'tdcurrentcontent' : tddata[0]['content'],
-            'tdcurrentduedate' : tddata[0]['due_date']
+            'tdcurrentduedate' : tddata[0]['due_date'],
+            'tdcurrentcreate' : tddata[0]['created_at'],
+            'tdcurrentupdate' : tddata[0]['updated_at'],
         }
 
 
@@ -223,6 +227,9 @@ def todomodify(request):
         newcontent = ''
         newduedate = ''
 
+        # 2 - * 수정하기 버튼 클릭 시 그 시점으로 업데이트 처리하여 수정된 날짜 나오게 하기 위한 것
+        newupdate= datetime.now()  
+
         # 2-1 -> status 비교             -> 수정 ok
         if modifyPayload['tdmdstatus'] == '':
             newstatus = currentToDo[0]['status'] 
@@ -264,7 +271,7 @@ def todomodify(request):
 
         print('새로운 값: ' , newstatus, newtitle,newcontent,newduedate )
 
-        modify_todo= TodoModel.objects.filter(id = modifyPayload['tdmdid']).update(status =newstatus  , title =newtitle , content =newcontent , due_date=newduedate)
+        modify_todo= TodoModel.objects.filter(id = modifyPayload['tdmdid']).update(status =newstatus  , title =newtitle , content =newcontent , due_date=newduedate , updated_at = newupdate)
 
         print("변경완료되었습니다 -> " , modify_todo)
 
@@ -323,8 +330,8 @@ def statusmodify(request):
             return JsonResponse(data)
         else :
             print("not")
-
-
+            
+            
 
 
         # TotalDB = TodoModel.objects.all().reverse().update()
