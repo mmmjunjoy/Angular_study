@@ -14,10 +14,25 @@
           <div>
             <p style="margin:20px; font-size: 20px;">Due Date </p>
           </div>
-          <div class="materialbox">
-            <!-- <input class="DueDatetext" [(ngModel)]="tododuedate" type="text" placeholder="ex: YYYY-MM-dd   H:M:S" /> -->
 
-            <!-- material 사용  -->
+
+          <!-- new -material -date&time -->
+          <div class="datetime">
+            <mat-form-field>
+              <input matInput type="datetime-local" [(ngModel)]="tododuedate">>
+            </mat-form-field>
+          </div>
+          <!-- /new -material -date&time -->
+
+
+
+
+
+          <!-- past material 사용  - 달력 -->
+
+          <!-- <div class="materialbox"> -->
+
+          <!-- 
             <div class="inputmt">
               <input matInput [matDatepicker]="picker" [(ngModel)]="tododuedate">
             </div>
@@ -28,14 +43,14 @@
             <div class="realmt">
               <mat-datepicker #picker></mat-datepicker>
             </div>
-
-
-
-
-            <!--/material 사용  -->
-
-
           </div>
+ -->
+
+          <!--/past material 사용  - 달력-->
+
+
+
+
         </div>
 
         <div class="statusbox">
