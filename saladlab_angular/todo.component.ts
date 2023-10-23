@@ -30,6 +30,19 @@ export class TodoComponent implements OnInit {
   transPopupTitle = "";
   transPopupContent = "";
   transPopupDuedate = "";
+  transPopupCreate = "";
+  transPopupUpdate = "";
+
+  // popup 넘겨줄때 데이터가공
+
+  processPopupduedate = "";
+  processPopupduedate2 = "";
+
+  processPopupcreate = "";
+  processPopupcreate2 = "";
+
+  processPopupupdate = "";
+  processPopupupdate2 = "";
 
   // session 사용할 변수
   useridtd = this.session.getInfo();
@@ -38,7 +51,8 @@ export class TodoComponent implements OnInit {
   duedatebtnon = "1";
 
   // button result (무한변경에 사용)
-  resultduedatebtn = 0;
+  resultduedatebtn1 = 0;
+  resultduedatebtn2 = 0;
 
   constructor(
     private apiService: ApiService,
@@ -99,7 +113,6 @@ export class TodoComponent implements OnInit {
         (json) => {
           console.log("successduedate");
           this.todomaining = json["tdmaining"];
-          this.todomaindone = json["tdmaindone"];
         },
         (error) => {
           console.log("duedateerror");
@@ -125,23 +138,23 @@ export class TodoComponent implements OnInit {
 
   // btn의 값이 짝수인지 홀수인지에 따라 다른 정렬함수 호출
   resultplanduedate() {
-    this.resultduedatebtn += 1;
-    if (this.resultduedatebtn % 2 == 0) {
+    this.resultduedatebtn1 += 1;
+    if (this.resultduedatebtn1 % 2 == 0) {
       this.getToDoPlan();
     } else {
       this.lineupDueDatePlan();
     }
-    console.log(this.resultduedatebtn);
+    console.log(this.resultduedatebtn1);
   }
 
   resultdoneduedate() {
-    this.resultduedatebtn += 1;
-    if (this.resultduedatebtn % 2 == 0) {
+    this.resultduedatebtn2 += 1;
+    if (this.resultduedatebtn2 % 2 == 0) {
       this.getToDoDone();
     } else {
       this.lineupDueDateDone();
     }
-    console.log(this.resultduedatebtn);
+    console.log(this.resultduedatebtn2);
   }
 
   // id 인자값으로 html 파일의 (tdmd[0]을 받는다)
@@ -214,6 +227,23 @@ export class TodoComponent implements OnInit {
           this.transPopupTitle = json["tdcurrenttitle"];
           this.transPopupContent = json["tdcurrentcontent"];
           this.transPopupDuedate = json["tdcurrentduedate"];
+          this.transPopupCreate = json["tdcurrentcreate"];
+          this.transPopupUpdate = json["tdcurrentupdate"];
+
+          //  한번에 데이터 가공  - duedate
+          this.processPopupduedate =
+            this.transPopupDuedate.substring(0, 10) +
+            " " +
+            this.transPopupDuedate.substring(11, 16);
+
+          // 두개의 변수를 이용한 데이터 가공  - createdate, updatedate
+
+          this.processPopupcreate = this.transPopupCreate.substring(0, 10);
+          this.processPopupcreate2 = this.transPopupCreate.substring(11, 16);
+
+          this.processPopupupdate = this.transPopupUpdate.substring(0, 10);
+          this.processPopupupdate2 = this.transPopupUpdate.substring(11, 16);
+
           console.log("success", this.transPopupStatus);
         },
         (error) => {
