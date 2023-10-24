@@ -94,6 +94,8 @@ def signup(request):
 # 2. 로그인
 # user/login
 
+# 먼저, username부터 확인하고 성공시 다음 orm 진행 
+# 통과 할시, password 값 확인 후 로그인 처리
 
 def login(request):
   
@@ -115,6 +117,30 @@ def login(request):
     UsernameSet = UserSignup.objects.all().values_list("user_name" , flat = True)
     print(UsernameSet)
 
+
+
+    
+    # 1단계, username 일치하는지 확인
+
+    loginusernamefail = {
+      "result" : False
+    }
+
+    x =0 
+    for i in UsernameSet:
+      if i == LoginUsername:
+        x += 1
+        print("x", x)
+      else:
+        print("bad")
+      
+    if x ==0:
+      print("username fail _ firstfail")
+      return JsonResponse(loginusernamefail)
+    
+
+
+
     #2.DB에서 해당 user -> password 확인
 
     Passwordreal = UserSignup.objects.filter(user_name = LoginUsername).values_list("password", flat= True)
@@ -125,7 +151,10 @@ def login(request):
 
     print("USERID:" , Userids)
 
-    #3.로그인 본 동작
+
+
+
+    # 2단계, username 일치 통과한 유저는 password 일치하는지 확인
 
     loginsuccess = {
       "result" : True,
@@ -136,21 +165,15 @@ def login(request):
       "result" : False
     }
 
-    loginusernamefail = {
-      "result" : False
-    }
-
-
-    # 수정  -> passwordset -> passwordreal(하나의 값)
-
-    for i in UsernameSet:
-      if i == LoginUsername:
-        if Passwordreal[0] == LoginPassword:
-            return JsonResponse(loginsuccess )
-        return JsonResponse(loginpasswordfail)
-      
     
-    return JsonResponse(loginusernamefail)
+    # 수정  -> passwordset -> passwordreal(하나의 값)
+    if Passwordreal[0] == LoginPassword:
+        return JsonResponse(loginsuccess )
+    return JsonResponse(loginpasswordfail)
+     
+  
+    
+
   
 
           
