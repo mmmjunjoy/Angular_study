@@ -20,6 +20,7 @@ from .serializers import BookSerializer
 
 @api_view(['GET'])
 def HelloAPI(request):
+  
   return Response("hello world!")
 
 # 위의 HelloAPI를 클래스형 뷰로 작성
@@ -28,6 +29,10 @@ def HelloAPI(request):
 #   def get(self, request):
 #     return Response("hello world!")
 
+
+
+
+# fbv - 함수형으로 선언
 
 # 도서 들 api 
 
@@ -38,6 +43,8 @@ def booksAPI(request):
     books = Book.objects.all()
     # many = True를 넣어줌으로써 , all()로 가져온 여러 개체 대해서 serialize 가능
     serializer = BookSerializer(books , many =True)
+    print("request.method" , request.method)
+
     return Response(serializer.data , status=status.HTTP_200_OK)
   elif request.method =='POST':
     serializer = BookSerializer(data = request.data)
@@ -57,5 +64,39 @@ def bookAPI(request,bid):
   book = get_object_or_404(Book , bid=bid)
   serializer = BookSerializer(book)
   return Response(serializer.data , status=status.HTTP_200_OK)
+
+
+
+
+#cbv -클래스형으로 선언 
+
+# 도서 들 api 
+
+class BooksAPI(APIView):
+  def get(self,request):
+    books = Book.objects.all()
+    serializer = BookSerializer(books,many = True)
+    return Response(serializer.data , status=status.HTTP_200_OK)
+  def post(self,request):
+    serializer = BookSerializer(data = request.data)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data , status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+  
+
+
+# 도서 각각 api 
+
+class BookAPI (APIView):
+
+  def get(self,request,bid):
+    book = get_object_or_404(Book ,bid=bid)
+    serializer = BookSerializer(book)
+    return Response(serializer.data , status=status.HTTP_200_OK)
+
+
+
 
   
