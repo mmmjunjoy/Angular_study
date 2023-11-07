@@ -1,5 +1,4 @@
-
-<!-- 스크롤 - fullpage를 위한 방식 -->
+<!--- 스크롤 - fullpage를 위한 방식 --->
 <!--  full page 라이브러리 사용 -->
 
 <script type="text/javascript">
@@ -47,14 +46,14 @@
         $('#section5_title02').delay(200).fadeIn(800);
         $('#section5_title03').delay(400).fadeIn(800);
       }
-  
+
       if (index == 6) {
         //$('#section5_bg').addClass('fade');
         $('#section6').delay(0).fadeIn(800);
         $('#section6').delay(200).fadeIn(800);
         $('#section6').delay(400).fadeIn(800);
       }
-  
+
     },
 
 
@@ -62,43 +61,43 @@
 </script>
 
 <script type="text/javascript">
-        let asd = $.fn.fullpage;
-    window.addEventListener('message', function (e) {
-      if (e.data.from == 'junbo') {
+  let asd = $.fn.fullpage;
+  window.addEventListener('message', function (e) {
+    if (e.data.from == 'junbo') {
 
-        if (e.data.result != 'error') {
-          let idx = e.data.idx;
-          let id = 'junbo' + idx.toString();
-          switch (e.data.data) {
-            case 'scroll_up':
+      if (e.data.result != 'error') {
+        let idx = e.data.idx;
+        let id = 'junbo' + idx.toString();
+        switch (e.data.data) {
+          case 'scroll_up':
 
-              if(document.body.classList.contains( "fp-viewing-06")) { temp = true; }
-              else { temp = false; }
-              if(temp == true) {
-                asd.moveSectionUp();
+            if (document.body.classList.contains("fp-viewing-06")) { temp = true; }
+            else { temp = false; }
+            if (temp == true) {
+              asd.moveSectionUp();
 
-                break;
-              }
-                  
-              if(document.body.classList.contains( "fp-viewing-6")) { temp = true; }
-              else { temp = false; }
-              if(temp == true) {
-                asd.moveSectionUp();
+              break;
+            }
 
-                break;
-              }
-                  
-              case 'scroll_down':
+            if (document.body.classList.contains("fp-viewing-6")) { temp = true; }
+            else { temp = false; }
+            if (temp == true) {
+              asd.moveSectionUp();
 
-                if(document.body.classList.contains("fp-viewing-06")) { temp = true; }
-                else { temp = false; }
-                if(temp == true) {
-                 asd.moveSectionDown();
+              break;
+            }
 
-                  break;
-                }
-          }
+          case 'scroll_down':
+
+            if (document.body.classList.contains("fp-viewing-06")) { temp = true; }
+            else { temp = false; }
+            if (temp == true) {
+              asd.moveSectionDown();
+
+              break;
+            }
         }
       }
-    })
-    </script>
+    }
+  })
+</script>
