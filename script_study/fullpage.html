@@ -1,0 +1,104 @@
+
+<!-- 스크롤 - fullpage를 위한 방식 -->
+<!--  full page 라이브러리 사용 -->
+
+<script type="text/javascript">
+  $('#fullpage').fullpage({
+    anchors: ['01', '02', '03', '04', '05', '06'],
+    navigation: true,
+    navigationPosition: 'right',
+    navigationTooltips: [''],
+    fitToSectionDelay: 0,
+    fitToSection: false,
+    scrollingSpeed: 800,
+    easing: 'easeInExpo',
+    'afterLoad': function (anchorLink, index) {
+
+      if (index == 1) {
+        $('#section1_bg').addClass('fade');
+        $('#section1_title01').delay(300).fadeIn(1000);
+        $('#section1_title02').delay(600).fadeIn(800);
+        $('#section1_title03').delay(900).fadeIn(800);
+        $('#section1_title04').delay(1200).fadeIn(800);
+      }
+      if (index == 2) {
+        $('#section2_bg').addClass('fade');
+        $('#section2_title01').delay(0).fadeIn(800);
+        $('#section2_title02').delay(200).fadeIn(800);
+        $('#section2_title03').delay(300).fadeIn(800);
+        $('#section2_title04').delay(500).fadeIn(800);
+      }
+      if (index == 3) {
+        $('#section3_bg').addClass('fade');
+        $('#section3_title01').delay(0).fadeIn(800);
+        $('#section3_title02').delay(200).fadeIn(800);
+        $('#section3_title03').delay(400).fadeIn(800);
+        $('#section3_title04').delay(600).fadeIn(800);
+      }
+      if (index == 4) {
+        $('#section4_bg').addClass('fade');
+        $('#section4_title01').delay(0).fadeIn(800);
+        $('#section4_title02').delay(300).fadeIn(800);
+        $('#section4_title03').delay(600).fadeIn(800);
+      }
+      if (index == 5) {
+        $('#section5_bg').addClass('fade');
+        $('#section5_title01').delay(0).fadeIn(800);
+        $('#section5_title02').delay(200).fadeIn(800);
+        $('#section5_title03').delay(400).fadeIn(800);
+      }
+  
+      if (index == 6) {
+        //$('#section5_bg').addClass('fade');
+        $('#section6').delay(0).fadeIn(800);
+        $('#section6').delay(200).fadeIn(800);
+        $('#section6').delay(400).fadeIn(800);
+      }
+  
+    },
+
+
+  });
+</script>
+
+<script type="text/javascript">
+        let asd = $.fn.fullpage;
+    window.addEventListener('message', function (e) {
+      if (e.data.from == 'junbo') {
+
+        if (e.data.result != 'error') {
+          let idx = e.data.idx;
+          let id = 'junbo' + idx.toString();
+          switch (e.data.data) {
+            case 'scroll_up':
+
+              if(document.body.classList.contains( "fp-viewing-06")) { temp = true; }
+              else { temp = false; }
+              if(temp == true) {
+                asd.moveSectionUp();
+
+                break;
+              }
+                  
+              if(document.body.classList.contains( "fp-viewing-6")) { temp = true; }
+              else { temp = false; }
+              if(temp == true) {
+                asd.moveSectionUp();
+
+                break;
+              }
+                  
+              case 'scroll_down':
+
+                if(document.body.classList.contains("fp-viewing-06")) { temp = true; }
+                else { temp = false; }
+                if(temp == true) {
+                 asd.moveSectionDown();
+
+                  break;
+                }
+          }
+        }
+      }
+    })
+    </script>
