@@ -135,3 +135,24 @@ class BookAPIMixins(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.D
   
   def delete(self, request,*args,**kwargs):
     return self.destroy(request,*args,**kwargs)
+
+
+
+
+# mixins 만으로도 간편함이 해소가 안될떄 , generics를 사용하여 더 간편하게 구현할 수 있다
+
+# generics - 세트라고 생각
+
+# get ,post put, delete등의 기능을 묶어서 쓸 수 있는 함수 형태가 있다.
+
+# 이때는 , 심지어 return 코드도 쓰지않아도 된다 -> 내부코드에서 실행
+
+
+class BooksAPIGenerics(generics.ListCreateAPIView):
+  queryset = Book.objects.all()
+  serializer_class = BookSerializer
+
+class BookAPIGenerics(generics.RetrieveUpdateDestroyAPIView):
+  queryset = Book.objects.all()
+  serializer_class = BookSerializer
+  lookup_field = 'bid'
