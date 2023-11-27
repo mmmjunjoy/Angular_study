@@ -16,6 +16,12 @@ from .serializers import BookSerializer
 # 중복을 방지하기 위해, mixins 사용
 from rest_framework import mixins
 
+# viewset
+
+from rest_framework import viewsets
+
+
+
 # 데코레이터 - @api_view사용 
 # 함수의 성격을 지정해준다 - ex) get,post.etc..
 
@@ -156,3 +162,12 @@ class BookAPIGenerics(generics.RetrieveUpdateDestroyAPIView):
   queryset = Book.objects.all()
   serializer_class = BookSerializer
   lookup_field = 'bid'
+
+
+
+  # drf ViewSet , Router 
+  # - > viewset을 사용한다면 , 단 3줄로 rest api를 구성
+
+class BookViewSet(viewsets.ModelViewSet):
+  queryset = Book.objects.all()
+  serializer_class = BookSerializer

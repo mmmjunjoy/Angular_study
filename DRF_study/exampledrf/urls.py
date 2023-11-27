@@ -1,5 +1,11 @@
 from django.urls import path,include
-from .views import HelloAPI ,bookAPI,booksAPI ,BookAPI ,BooksAPI,BookAPIMixins,BooksAPIMixins,BooksAPIGenerics,BookAPIGenerics
+from .views import HelloAPI ,bookAPI,booksAPI ,BookAPI ,BooksAPI,BookAPIMixins,BooksAPIMixins,BooksAPIGenerics,BookAPIGenerics , BookViewSet
+
+# viewset - url 사용
+
+from rest_framework import routers
+
+
 
 urlpatterns = [
   path("hello/",HelloAPI),
@@ -12,3 +18,12 @@ urlpatterns = [
   path("generics/books/",BooksAPIGenerics.as_view() ),
   path("generics/book/<int:bid>/" , BookAPIGenerics.as_view() )
 ]
+
+
+router = routers.SimpleRouter()
+router.register('books',BookViewSet)
+
+# 아래를 사용할 경우 -> viewset을 사용한다는 의미 , 위의 urlpattern은 자동적으로 사용 x
+# urlpatterns = router.urls
+
+
