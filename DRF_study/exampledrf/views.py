@@ -13,6 +13,9 @@ from .models import Book
 from .serializers import BookSerializer
 
 
+# 중복을 방지하기 위해, mixins 사용
+from rest_framework import mixins
+
 # 데코레이터 - @api_view사용 
 # 함수의 성격을 지정해준다 - ex) get,post.etc..
 
@@ -99,4 +102,36 @@ class BookAPI (APIView):
 
 
 
+# mixins 사용  -> 사용하니 , delete버튼부터  , put - 업데이트 할 수 있는 폼까지 생성이 되어 편리해졌다.
+
+# 전체에 대한 , get ,post
+
+class BooksAPIMixins(mixins.ListModelMixin , mixins.CreateModelMixin , generics.GenericAPIView):
+  queryset = Book.objects.all()
+  serializer_class = BookSerializer
+
+  def get(self,request, *args, **kwargs):
+    return self.list(request,*args,**kwargs)
   
+  def post(self,request,*args,**kwargs):
+    return self.create(request, *args, **kwargs)
+
+  
+
+# 각각에 대한 api  - 책 1권에 대한 것
+
+# 수정 , 삭제 도 포함
+
+class BookAPIMixins(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+  queryset = Book.objects.all()
+  serializer_class = BookSerializer
+  lookup_field = 'bid'
+
+  def get(self,request, *args, **kwargs):
+    return self.retrieve(request, *args,**kwargs)
+  
+  def put(self ,request, *args,**kwargs):
+    return self.update(request,*args,**kwargs)
+  
+  def delete(self, request,*args,**kwargs):
+    return self.destroy(request,*args,**kwargs)
