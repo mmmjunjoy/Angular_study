@@ -20,6 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+
+# 토큰 방식에 쓰이는 것!
 SECRET_KEY = 'django-insecure-n%1hp9gb#-kt&!c3v1_5o2a-fmh*8+-godv=3tq#qa@gec0l+='
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -40,7 +42,13 @@ INSTALLED_APPS = [
     #drf 적용으로 인한 추가
     'rest_framework',
     #새로운 앱 등록으로 인해 추가
-    'exampledrf'
+    'exampledrf',
+    #기본 토큰 인증방식을 사용
+    'rest_framework.authtoken',
+    #user앱 등록으로 인해
+    'users'
+
+
 ]
 
 MIDDLEWARE = [
@@ -104,8 +112,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+REST_FRAMEWORK = {
+  'DEFAULT_AUTHENTICATION_CLASSES':[
+    'rest_framework.authentication.TokenAuthentication',
+  ]
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
+
+
 
 LANGUAGE_CODE = 'en-us'
 
