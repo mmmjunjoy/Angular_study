@@ -5,7 +5,7 @@ from .views import HelloAPI ,bookAPI,booksAPI ,BookAPI ,BooksAPI,BookAPIMixins,B
 
 from rest_framework import routers
 
-
+from . import views
 
 urlpatterns = [
   path("hello/",HelloAPI),
@@ -16,7 +16,8 @@ urlpatterns = [
   path("mixin/books/", BooksAPIMixins.as_view()),
   path("mixin/book/<int:bid>/", BookAPIMixins.as_view()),
   path("generics/books/",BooksAPIGenerics.as_view() ),
-  path("generics/book/<int:bid>/" , BookAPIGenerics.as_view() )
+  path("generics/book/<int:bid>/" , BookAPIGenerics.as_view() ),
+  path('openapi/' , views.openapi, name = 'openapi_wheather')
 ]
 
 

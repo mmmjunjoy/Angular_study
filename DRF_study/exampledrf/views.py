@@ -11,6 +11,7 @@ from rest_framework.decorators import api_view
 from rest_framework.generics import get_object_or_404
 from .models import Book
 from .serializers import BookSerializer
+from django.http import HttpResponse, JsonResponse
 
 
 # 중복을 방지하기 위해, mixins 사용
@@ -21,11 +22,51 @@ from rest_framework import mixins
 from rest_framework import viewsets
 
 
+from django.shortcuts import render
+from django.conf import settings
+
+import datetime
+import requests
+
+API_KEY = settings.API_KEY
+
+
 
 # 데코레이터 - @api_view사용 
 # 함수의 성격을 지정해준다 - ex) get,post.etc..
 
 # 기본 GET api 
+
+
+def openapi(request):
+  url = ' http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?'
+  service_key = API_KEY
+  today = datetime.datetime.today()
+  base_date = today.strftime("%Y%m%d")
+  print("basedate" , base_date)
+  base_time = "0800"
+  nx = '60'
+  ny = '128'
+
+  payload = "ServiceKey=" + service_key + "&" +\
+  "dataType=json" + "&" +\
+  "base_date=" + base_date +"&" +\
+  "base_time=" + base_time + '&' +\
+  "nx=" + nx + "&" +\
+  "ny=" + ny
+
+  response = requests.get(url + payload)
+
+  print("응답" , response)
+
+  #-- 응답은 잘된다---
+
+  items = response.json()
+
+
+  print("진짜값" , items)
+
+  return JsonResponse(items)
 
 @api_view(['GET'])
 def HelloAPI(request):

@@ -12,8 +12,21 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+# 오픈 API를 사용하기 위해
+
+import os
+import environ
+
+env = environ.Env(DEBUG = (bool,True))
+
+environ.Env.read_env(env_file = os.path.join(BASE_DIR, '.env'))
+
+API_KEY = env('API_KEY')
 
 
 # Quick-start development settings - unsuitable for production
