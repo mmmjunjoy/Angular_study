@@ -28,15 +28,13 @@ from django.conf import settings
 import datetime
 import requests
 
+
+# settings.py 로 부터 API_KEY를 받아온다
+
 API_KEY = settings.API_KEY
 
 
-
-# 데코레이터 - @api_view사용 
-# 함수의 성격을 지정해준다 - ex) get,post.etc..
-
-# 기본 GET api 
-
+# openapi - 기상청 날씨예보 실습을 위한 함수
 
 def openapi(request):
   url = ' http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?'
@@ -50,7 +48,7 @@ def openapi(request):
 
   payload = "ServiceKey=" + service_key + "&" +\
   "dataType=json" + "&" +\
-  "base_date=" + base_date +"&" +\
+  "base_date=" + base_date + "&" +\
   "base_time=" + base_time + '&' +\
   "nx=" + nx + "&" +\
   "ny=" + ny
@@ -67,6 +65,54 @@ def openapi(request):
   print("진짜값" , items)
 
   return JsonResponse(items)
+
+
+
+# apiView를 사용해서 , openapi함수 변경
+
+
+@api_view(['GET'])
+def wheatherAPI(request):
+    url = ' http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?'
+    service_key = API_KEY
+    today = datetime.datetime.today()
+    base_date = today.strftime("%Y%m%d")
+    print("basedate" , base_date)
+    base_time = "0800"
+    nx = '60'
+    ny = '128'
+
+    payload = "ServiceKey=" + service_key + "&" +\
+    "dataType=json" + "&" +\
+    "base_date=" + base_date + "&" +\
+    "base_time=" + base_time + '&' +\
+    "nx=" + nx + "&" +\
+    "ny=" + ny
+
+    response = requests.get(url + payload)
+
+    print("응답" , response)
+
+    #-- 응답은 잘된다---
+
+    items = response.json()
+
+
+    print("진짜값" , items)
+
+    # Response로 받지 않고  , jsonresponse로 받을 경우 -> drf 적용이 안된다.
+    return Response(items)
+
+  
+
+
+# 데코레이터 - @api_view사용 
+# 함수의 성격을 지정해준다 - ex) get,post.etc..
+
+# 기본 GET api 
+
+
+
 
 @api_view(['GET'])
 def HelloAPI(request):
