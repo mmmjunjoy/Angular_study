@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import HelloAPI ,bookAPI,booksAPI ,BookAPI ,BooksAPI,BookAPIMixins,BooksAPIMixins,BooksAPIGenerics,BookAPIGenerics , BookViewSet , wheatherAPI
+from .views import HelloAPI ,bookAPI,booksAPI ,BookAPI ,BooksAPI,BookAPIMixins,BooksAPIMixins,BooksAPIGenerics,BookAPIGenerics , BookViewSet , weather ,ChannelAPI
 
 # viewset - url 사용
 
@@ -18,7 +18,8 @@ urlpatterns = [
   path("generics/books/",BooksAPIGenerics.as_view() ),
   path("generics/book/<int:bid>/" , BookAPIGenerics.as_view() ),
   path('openapi/' , views.openapi, name = 'openapi_wheather'),
-  path('Wheatherapi/' , wheatherAPI)
+  path('Weatherapi/' , weather),
+  path('Channelapi/' , ChannelAPI)
 ]
 
 

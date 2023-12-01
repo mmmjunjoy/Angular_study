@@ -29,7 +29,7 @@ import datetime
 import requests
 
 
-# settings.py 로 부터 API_KEY를 받아온다
+# settings.py 로 부터 API_KEY를 받아온다 
 
 API_KEY = settings.API_KEY
 
@@ -68,11 +68,11 @@ def openapi(request):
 
 
 
-# apiView를 사용해서 , openapi함수 변경
+# apiView를 사용해서 , openapi함수 변경 -> weatherAPI
 
-
+# @api_view(['GET']) -> 하위 함수에서 get요청인지 체크하고 아닐경우 , json형태로 에러 반환한다.
 @api_view(['GET'])
-def wheatherAPI(request):
+def weather(request):
     url = ' http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?'
     service_key = API_KEY
     today = datetime.datetime.today()
@@ -82,6 +82,7 @@ def wheatherAPI(request):
     nx = '60'
     ny = '128'
 
+    # PAYLOAD 변수명 정확하게 해줘야 한다.
     payload = "ServiceKey=" + service_key + "&" +\
     "dataType=json" + "&" +\
     "base_date=" + base_date + "&" +\
@@ -104,6 +105,38 @@ def wheatherAPI(request):
     return Response(items)
 
   
+
+
+# channel talk api - GET (Channel)
+
+# channel talk open api를 사용하기 위해서는 , 
+# Header 에 필수로 key 와 secret 값이 필요하다.
+
+@api_view(['GET'])
+
+def ChannelAPI (request):
+  url = 'https://api.channel.io/open/v4/channel?'
+
+  headers = {'accept':'application/json' , 'x-access-key':'키값' , 'x-access-secret':'시크릿값' }
+
+
+  response = requests.get(url , headers=headers)
+
+  print("응답" , response)
+  
+  items = response.json()
+
+
+  print("응답 값" , items)
+
+
+  return Response(items)
+
+
+
+
+
+
 
 
 # 데코레이터 - @api_view사용 
