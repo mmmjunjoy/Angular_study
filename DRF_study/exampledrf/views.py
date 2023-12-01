@@ -110,14 +110,16 @@ def weather(request):
 # channel talk api - GET (Channel)
 
 # channel talk open api를 사용하기 위해서는 , 
-# Header 에 필수로 key 와 secret 값이 필요하다.
+# Header 에 필수로 key 와 secret 값이 필요하다
+
+# https://api.channel.io/open/v4/channel
 
 @api_view(['GET'])
 
 def ChannelAPI (request):
   url = 'https://api.channel.io/open/v4/channel?'
 
-  headers = {'accept':'application/json' , 'x-access-key':'키값' , 'x-access-secret':'시크릿값' }
+  headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':'' }
 
 
   response = requests.get(url , headers=headers)
@@ -128,6 +130,43 @@ def ChannelAPI (request):
 
 
   print("응답 값" , items)
+
+
+  return Response(items)
+
+
+
+# channel talk 요구사항에 부합하는 api - single user api사용
+# payload로 userid값을 url 뒤에 붙이기
+
+# https://api.channel.io/open/v4/users/@{memberId} 
+
+# ** {} 안에 값을 채울때는 .format()을 사용하면 된다.
+
+@api_view(['GET'])
+
+def singleuserAPI (request):
+
+  memberid = '멤버아이디 - memberid'
+
+  url = 'https://api.channel.io/open/v4/users/@{}'.format(memberid)
+
+  headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':''  }
+
+  response = requests.get(url, headers=headers)
+
+  print("응답" , response)
+  
+  items = response.json()
+
+  print("응답 값" , items)
+
+  # 필요한 값 추출 - profilemallId
+
+  res = items['user']['profile']['mallId']
+  
+  print("---------------------------------------------------------------------")
+  print(" profile.mallID --> " ,res )
 
 
   return Response(items)
