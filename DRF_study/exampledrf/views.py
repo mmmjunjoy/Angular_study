@@ -147,9 +147,9 @@ def ChannelAPI (request):
 
 def singleuserAPI (request):
 
-  memberid = '멤버아이디 - memberid'
+  userid = 'e4f4c27d-6810-4f8b-8c40-2034f7c3137a'
 
-  url = 'https://api.channel.io/open/v4/users/@{}'.format(memberid)
+  url = 'https://api.channel.io/open/v4/users/@{}'.format(userid)
 
   headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':''  }
 
