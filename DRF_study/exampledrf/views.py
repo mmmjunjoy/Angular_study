@@ -147,9 +147,9 @@ def ChannelAPI (request):
 
 def singleuserAPI (request):
 
-  userid = 'e4f4c27d-6810-4f8b-8c40-2034f7c3137a'
+  memberId = 'e4f4c27d-6810-4f8b-8c40-2034f7c3137a'
 
-  url = 'https://api.channel.io/open/v4/users/@{}'.format(userid)
+  url = 'https://api.channel.io/open/v4/users/@{}'.format(memberId)
 
   headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':''  }
 
@@ -170,6 +170,73 @@ def singleuserAPI (request):
 
 
   return Response(items)
+
+
+
+# 한번에 모든 user의 mallID를 추출하기 위한 API사용
+
+@api_view(['GET'])
+
+def alluserAPI(request):
+
+  url = 'https://api.channel.io/open/v4/user-chats?'
+
+  headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':''  }
+
+  response = requests.get(url,headers=headers)
+
+  print("응답" , response)
+
+  
+  items = response.json()
+
+  # itmes['users] 에 mall들이 담긴다.
+  # 이것을 for문 이용해서 추출해야된다 
+  # res = items['users'][0]['profile']['mallId']  - > 여기서 [0] 인덱스 사용하여 추출
+
+  alluser = items['users']
+
+  alluserlen = len(items['users'])
+
+  print("전체 user 길이",alluserlen)
+
+  alluserlist = []
+
+  ocnt = 0
+  xcnt = 0
+  nothavemallid = []
+
+  for i in range(len(items['users'])):
+    print("hi")
+    if 'mallId' in items['users'][i]['profile']:
+      alluserlist.append( items['users'][i]['profile']['mallId'])
+      ocnt += 1
+    else:
+      nothavemallid.append( items['users'][i]['profile'])
+      nothavemallid.append(i)
+      xcnt += 1
+  
+  print("---------------------------------------------------------")
+  
+  print("mallid가지고 있는 업체 정보" , alluserlist)
+  print("mallid 가지고 있는 업체 수" , ocnt)
+
+
+  print("---------------------------------------------------------")
+
+  print("mallid 안가지고 있는 업체 정보" , nothavemallid)
+  print("mallid 안가지고 있는 업체 수" , xcnt)
+
+  print("---------------------------------------------------------")
+
+
+  items = items['users'][5]
+
+  return Response(items)
+
+
+
+
 
 
 

@@ -28,9 +28,10 @@ class Command(BaseCommand):
 
         res = items['user']['profile']['mallId']
         
-        print("----------------------------------------------------")
+        print("--------------------------------------------------")
         print(" profile.mallID --> " ,res )
 
+   
 
 
 
