@@ -119,7 +119,7 @@ def weather(request):
 def ChannelAPI (request):
   url = 'https://api.channel.io/open/v4/channel?'
 
-  headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':'' }
+  headers = {'accept':'application/json' , 'x-access-key':'656977c03efa8f4d07ce' , 'x-access-secret':'753220962e31425ebc56db5f90f0dcc9' }
 
 
   response = requests.get(url , headers=headers)
@@ -128,11 +128,13 @@ def ChannelAPI (request):
   
   items = response.json()
 
+  res = items['channel']
+
 
   print("응답 값" , items)
 
 
-  return Response(items)
+  return Response(res)
 
 
 
@@ -151,7 +153,7 @@ def singleuserAPI (request):
 
   url = 'https://api.channel.io/open/v4/users/@{}'.format(memberId)
 
-  headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':''  }
+  headers = {'accept':'application/json' , 'x-access-key':'656977c03efa8f4d07ce' , 'x-access-secret':'753220962e31425ebc56db5f90f0dcc9'  }
 
   response = requests.get(url, headers=headers)
 
@@ -179,11 +181,23 @@ def singleuserAPI (request):
 
 def alluserAPI(request):
 
-  url = 'https://api.channel.io/open/v4/user-chats?'
+  url = 'https://api.channel.io/open/v5/user-chats?'
 
-  headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':''  }
+  headers = {'accept':'application/json' , 'x-access-key':'656977c03efa8f4d07ce' , 'x-access-secret':'753220962e31425ebc56db5f90f0dcc9' ,'limit':'499' ,'sortOrder' :'ASC'  }
 
-  response = requests.get(url,headers=headers)
+  # Query paramter 사용 - > limit :500 최대로 하면 , 
+  
+  # 기존 25개에서 -> 140개정도로 상승
+
+  LIMIT = '500'
+
+  state = 'closed'
+
+  payload = "limit=" + LIMIT
+  
+
+
+  response = requests.get(url + payload,headers=headers)
 
   print("응답" , response)
 
@@ -204,15 +218,17 @@ def alluserAPI(request):
 
   ocnt = 0
   xcnt = 0
+  nothavemalllist = []
   nothavemallid = []
 
   for i in range(len(items['users'])):
-    print("hi")
+    # profile에 mallId키가 존재한다면, 리스트에 포함
+    
     if 'mallId' in items['users'][i]['profile']:
       alluserlist.append( items['users'][i]['profile']['mallId'])
       ocnt += 1
     else:
-      nothavemallid.append( items['users'][i]['profile'])
+      nothavemalllist.append( items['users'][i]['profile'])
       nothavemallid.append(i)
       xcnt += 1
   
@@ -224,15 +240,42 @@ def alluserAPI(request):
 
   print("---------------------------------------------------------")
 
-  print("mallid 안가지고 있는 업체 정보" , nothavemallid)
+  print("mallid 안가지고 있는 업체 정보" , nothavemalllist)
   print("mallid 안가지고 있는 업체 수" , xcnt)
+  print("mallid 안가지고 있는 업체 리스트" , nothavemallid)
 
   print("---------------------------------------------------------")
 
 
-  items = items['users'][5]
+  items = items['users'][0]
 
   return Response(items)
+
+
+
+# 위의 api를 사용하면, userchat을 사용하고 있는 업체에 대해서만 추출이 되는거같아
+# api 2개를 연이어 사용하는 것으로 해결하고자 함  
+
+# Get a single Group - api
+
+@api_view(['GET'])
+
+def groupAPI (request):
+
+  url = ' https://api.channel.io/open/v4/groups/332694?'
+
+  headers = {'accept':'application/json' , 'x-access-key':'656977c03efa8f4d07ce' , 'x-access-secret':'753220962e31425ebc56db5f90f0dcc9'  }
+
+  response = requests.get(url, headers=headers)
+
+  print('응답', response)
+
+  items = response.json()
+
+  return Response(items)
+
+
+
 
 
 

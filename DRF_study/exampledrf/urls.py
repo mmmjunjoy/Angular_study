@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import HelloAPI ,bookAPI,booksAPI ,BookAPI ,BooksAPI,BookAPIMixins,BooksAPIMixins,BooksAPIGenerics,BookAPIGenerics , BookViewSet , weather ,ChannelAPI,singleuserAPI ,alluserAPI
+from .views import HelloAPI ,bookAPI,booksAPI ,BookAPI ,BooksAPI,BookAPIMixins,BooksAPIMixins,BooksAPIGenerics,BookAPIGenerics , BookViewSet , weather ,ChannelAPI,singleuserAPI ,alluserAPI,groupAPI
 
 # viewset - url 사용
 
@@ -22,6 +22,7 @@ urlpatterns = [
   path('Channelapi/' , ChannelAPI),
   path('singleuser/' ,singleuserAPI),
   path('alluser/' ,alluserAPI),
+  path('groupuser/' ,groupAPI),
 ]
 
 
