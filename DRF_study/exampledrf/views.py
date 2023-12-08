@@ -28,6 +28,8 @@ from django.conf import settings
 import datetime
 import requests
 
+import json
+
 
 # settings.py 로 부터 API_KEY를 받아온다 
 
@@ -119,7 +121,7 @@ def weather(request):
 def ChannelAPI (request):
   url = 'https://api.channel.io/open/v4/channel?'
 
-  headers = {'accept':'application/json' , 'x-access-key':'656977c03efa8f4d07ce' , 'x-access-secret':'753220962e31425ebc56db5f90f0dcc9' }
+  headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':'' }
 
 
   response = requests.get(url , headers=headers)
@@ -141,7 +143,7 @@ def ChannelAPI (request):
 # channel talk 요구사항에 부합하는 api - single user api사용
 # payload로 userid값을 url 뒤에 붙이기
 
-# https://api.channel.io/open/v4/users/@{memberId} 
+# https://api.channel.io/open/v4/users/{userId} 
 
 # ** {} 안에 값을 채울때는 .format()을 사용하면 된다.
 
@@ -149,11 +151,11 @@ def ChannelAPI (request):
 
 def singleuserAPI (request):
 
-  memberId = 'e4f4c27d-6810-4f8b-8c40-2034f7c3137a'
+  userId = ''  #노마셀업체
 
-  url = 'https://api.channel.io/open/v4/users/@{}'.format(memberId)
+  url = 'https://api.channel.io/open/v4/users/{}'.format(userId)
 
-  headers = {'accept':'application/json' , 'x-access-key':'656977c03efa8f4d07ce' , 'x-access-secret':'753220962e31425ebc56db5f90f0dcc9'  }
+  headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':''  }
 
   response = requests.get(url, headers=headers)
 
@@ -163,7 +165,7 @@ def singleuserAPI (request):
 
   print("응답 값" , items)
 
-  # 필요한 값 추출 - profilemallId
+  # 필요한 값 추출 - profilemallId , 
 
   res = items['user']['profile']['mallId']
   
@@ -183,7 +185,7 @@ def alluserAPI(request):
 
   url = 'https://api.channel.io/open/v5/user-chats?'
 
-  headers = {'accept':'application/json' , 'x-access-key':'656977c03efa8f4d07ce' , 'x-access-secret':'753220962e31425ebc56db5f90f0dcc9' ,'limit':'499' ,'sortOrder' :'ASC'  }
+  headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':'' ,'limit':'499' ,'sortOrder' :'ASC'  }
 
   # Query paramter 사용 - > limit :500 최대로 하면 , 
   
@@ -223,26 +225,40 @@ def alluserAPI(request):
 
   for i in range(len(items['users'])):
     # profile에 mallId키가 존재한다면, 리스트에 포함
+
+    # id값 추출 , mallId추출 - 2가지를 해야한다.
     
-    if 'mallId' in items['users'][i]['profile']:
-      alluserlist.append( items['users'][i]['profile']['mallId'])
+    if 'mallId' in items['users'][i]['profile'] :
+      alluserlist.append(items['users'][i]['profile']['mallId'])
       ocnt += 1
     else:
-      nothavemalllist.append( items['users'][i]['profile'])
+      nothavemalllist.append( items['users'][i])
       nothavemallid.append(i)
       xcnt += 1
   
   print("---------------------------------------------------------")
   
-  print("mallid가지고 있는 업체 정보" , alluserlist)
-  print("mallid 가지고 있는 업체 수" , ocnt)
+  # print("mallid가지고 있는 업체 정보" , alluserlist)
+  print("mallid와 userid 둘다 가지고 있는 업체 수" , ocnt)
+
+
+  # list로 변환 후 key값만 가져오기 - 즉, userid값만 가져오기
+
+  # userid_key = list(alluserlist.keys())
+
+  # list로 변환 후 value값만 가져오기 - 즉, userid값만 가져오기
+
+  # mallid_value = list(alluserlist.values())
+
+  # print("userid", userid_key[0])
+  # print("mallid" , mallid_value[0])
 
 
   print("---------------------------------------------------------")
 
-  print("mallid 안가지고 있는 업체 정보" , nothavemalllist)
-  print("mallid 안가지고 있는 업체 수" , xcnt)
-  print("mallid 안가지고 있는 업체 리스트" , nothavemallid)
+  # print("mallid 안가지고 있는 업체 정보" , nothavemalllist)
+  # print("mallid 안가지고 있는 업체 수" , xcnt)
+  # print("mallid 안가지고 있는 업체 리스트" , nothavemallid)
 
   print("---------------------------------------------------------")
 
@@ -250,6 +266,43 @@ def alluserAPI(request):
   items = items['users'][0]
 
   return Response(items)
+
+
+
+# post 하기 위한 api - channeltalk에 
+
+@api_view(['GET','PATCH'])
+
+def userupdateAPI (request):
+
+
+ 
+
+    userid = ''
+
+    url = 'https://api.channel.io/open/v4/users/{}'.format(userid)
+
+    headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':'' ,'Content-Type': 'application/json'  }
+
+
+    data = {
+                    
+                    "profile": {
+                   
+                        "name": "할루할루",
+                     
+                    },
+                    
+                  
+          }
+
+    response = requests.patch(url ,data =json.dumps(data) ,headers=headers)
+
+    # print("응답" , response)
+
+    items = response.json()
+
+    return Response(items)
 
 
 
@@ -264,7 +317,8 @@ def groupAPI (request):
 
   url = ' https://api.channel.io/open/v4/groups/332694?'
 
-  headers = {'accept':'application/json' , 'x-access-key':'656977c03efa8f4d07ce' , 'x-access-secret':'753220962e31425ebc56db5f90f0dcc9'  }
+  headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':''  }
+
 
   response = requests.get(url, headers=headers)
 

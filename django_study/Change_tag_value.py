@@ -15,6 +15,7 @@
 
         # 추출된 mallid에 대해서만 status값 가져오기 
         # 원하는 결과값  -> dictionary 형태로 , {'1':'','2':'' ,'3':''}
+        
         # list - 채널톡에서 추출한 mallID이다.
         
         list = ['doufabric','kicksewing','urbansteer','sh9193','dddd']
