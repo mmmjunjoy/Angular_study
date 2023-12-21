@@ -1,11 +1,13 @@
 from django.urls import path,include
 from .views import HelloAPI ,bookAPI,booksAPI ,BookAPI ,BooksAPI,BookAPIMixins,BooksAPIMixins,BooksAPIGenerics,BookAPIGenerics , BookViewSet , weather ,ChannelAPI,singleuserAPI ,alluserAPI,groupAPI ,userupdateAPI,webhooks
 
-# viewset - url 사용
+# viewset - url 사용.
 
 from rest_framework import routers
 
 from . import views
+
+
 
 urlpatterns = [
   path("hello/",HelloAPI),

@@ -163,11 +163,11 @@ def ChannelAPI (request):
 
 def singleuserAPI (request):
 
-  userId = ''  #노마셀업체
+  userId = ''  
 
   url = 'https://api.channel.io/open/v4/users/{}'.format(userId)
 
-  headers = {'accept':'application/json' , 'x-access-key':'656977c03efa8f4d07ce' , 'x-access-secret':'753220962e31425ebc56db5f90f0dcc9'  }
+  headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':''  }
 
   response = requests.get(url, headers=headers)
 
@@ -192,7 +192,7 @@ def singleuserAPI (request):
 # 한번에 모든 user의 mallID를 추출하기 위한 API사용
 
 
-
+# 웹훅 적용을 위해,  POST추가
 @api_view(['POST','GET'])
 
 def alluserAPI(request):
@@ -202,7 +202,7 @@ def alluserAPI(request):
   # TOKENS = "aa9c8240806900f8979decf99a72fc0a"
   # payload = "token=" + TOKENS
 
-  headers = {'accept':'application/json' , 'x-access-key':'656977c03efa8f4d07ce' , 'x-access-secret':'753220962e31425ebc56db5f90f0dcc9' ,'limit':'499' ,'sortOrder' :'ASC'  }
+  headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':'' ,'limit':'499' ,'sortOrder' :'ASC'  }
 
   # Query paramter 사용 - > limit :500 최대로 하면 , 
   
