@@ -36,6 +36,18 @@ import json
 API_KEY = settings.API_KEY
 
 
+# webhook  실험
+
+@api_view(['POST','GET'])
+
+def webhooks(request):
+
+    print("hi")
+
+    return Response("hi webhook")
+
+  
+
 # openapi - 기상청 날씨예보 실습을 위한 함수
 
 def openapi(request):
@@ -155,7 +167,7 @@ def singleuserAPI (request):
 
   url = 'https://api.channel.io/open/v4/users/{}'.format(userId)
 
-  headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':''  }
+  headers = {'accept':'application/json' , 'x-access-key':'656977c03efa8f4d07ce' , 'x-access-secret':'753220962e31425ebc56db5f90f0dcc9'  }
 
   response = requests.get(url, headers=headers)
 
@@ -179,13 +191,18 @@ def singleuserAPI (request):
 
 # 한번에 모든 user의 mallID를 추출하기 위한 API사용
 
-@api_view(['GET'])
+
+
+@api_view(['POST','GET'])
 
 def alluserAPI(request):
 
   url = 'https://api.channel.io/open/v5/user-chats?'
 
-  headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':'' ,'limit':'499' ,'sortOrder' :'ASC'  }
+  # TOKENS = "aa9c8240806900f8979decf99a72fc0a"
+  # payload = "token=" + TOKENS
+
+  headers = {'accept':'application/json' , 'x-access-key':'656977c03efa8f4d07ce' , 'x-access-secret':'753220962e31425ebc56db5f90f0dcc9' ,'limit':'499' ,'sortOrder' :'ASC'  }
 
   # Query paramter 사용 - > limit :500 최대로 하면 , 
   
@@ -198,6 +215,7 @@ def alluserAPI(request):
   payload = "limit=" + LIMIT
   
 
+  print("웹훅 작동*****")
 
   response = requests.get(url + payload,headers=headers)
 
@@ -216,7 +234,7 @@ def alluserAPI(request):
 
   print("전체 user 길이",alluserlen)
 
-  alluserlist = []
+  alluserlist = {}
 
   ocnt = 0
   xcnt = 0
@@ -228,13 +246,14 @@ def alluserAPI(request):
 
     # id값 추출 , mallId추출 - 2가지를 해야한다.
     
-    if 'mallId' in items['users'][i]['profile'] :
-      alluserlist.append(items['users'][i]['profile']['mallId'])
-      ocnt += 1
-    else:
-      nothavemalllist.append( items['users'][i])
-      nothavemallid.append(i)
-      xcnt += 1
+    if 'profile' in items['users'][i]:
+        if 'id' in items['users'][i] and 'mallId' in items['users'][i]['profile'] :
+            alluserlist[items['users'][i]['id']] =items['users'][i]['profile']['mallId']
+            ocnt += 1
+        else:
+            nothavemalllist.append( items['users'][i])
+            nothavemallid.append(i)
+            xcnt += 1
   
   print("---------------------------------------------------------")
   
@@ -265,7 +284,7 @@ def alluserAPI(request):
 
   items = items['users'][0]
 
-  return Response(items)
+  return Response("웹훅 실행")
 
 
 
@@ -281,7 +300,7 @@ def userupdateAPI (request):
     userid = ''
 
     url = 'https://api.channel.io/open/v4/users/{}'.format(userid)
-
+  
     headers = {'accept':'application/json' , 'x-access-key':'' , 'x-access-secret':'' ,'Content-Type': 'application/json'  }
 
 

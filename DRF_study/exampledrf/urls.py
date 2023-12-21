@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import HelloAPI ,bookAPI,booksAPI ,BookAPI ,BooksAPI,BookAPIMixins,BooksAPIMixins,BooksAPIGenerics,BookAPIGenerics , BookViewSet , weather ,ChannelAPI,singleuserAPI ,alluserAPI,groupAPI ,userupdateAPI
+from .views import HelloAPI ,bookAPI,booksAPI ,BookAPI ,BooksAPI,BookAPIMixins,BooksAPIMixins,BooksAPIGenerics,BookAPIGenerics , BookViewSet , weather ,ChannelAPI,singleuserAPI ,alluserAPI,groupAPI ,userupdateAPI,webhooks
 
 # viewset - url 사용
 
@@ -23,7 +23,8 @@ urlpatterns = [
   path('singleuser/' ,singleuserAPI),
   path('alluser/' ,alluserAPI),
   path('groupuser/' ,groupAPI),
-  path('updateuser/',userupdateAPI)
+  path('updateuser/',userupdateAPI),
+  path('webhook/' , webhooks)
 ]
 
 

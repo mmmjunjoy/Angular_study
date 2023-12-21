@@ -1,0 +1,60 @@
+<div id="fullpage">
+
+  <!--01 번째 이미지 입니다.-->
+  <div class="section sect1"
+    style="  background-size:cover; background-position:center center; z-index:999; position: relative; ">
+    <a href="#" id="backl1"></a>
+  </div>
+  <!--01 번째 이미지 입니다.-->
+
+  <!--02 번째 이미지 입니다.-->
+  <div class="section sect2"
+    style="  background-size:cover; background-position:center center; z-index:999; position: relative; ">
+    <a href="#" id="backl2"></a>
+  </div>
+  <!--02 번째 이미지 입니다.-->
+
+  <!--03 번째 이미지 입니다.-->
+  <div class="section sect3"
+    style="  background-size:cover; background-position:center center; z-index:999; position: relative; ">
+    <a href="#" id="backl3"></a>
+  </div>
+  <!--03 번째 이미지 입니다.-->
+
+
+  <!--04 -->
+  <div class="section fp-auto-height" style="z-index:999;">
+    <div class="myContent">
+      <!--@import(/artfinger/footer.html)-->
+    </div>
+  </div>
+  <!--04 -->
+</div>
+
+
+<script type="text/javascript">
+
+  window.addEventListener('message', function (e) {
+    if (e.data.from == 'junbo') {
+      if (e.data.result != 'error') {
+
+        let idx = e.data.idx
+        let id = 'junbo' + idx.toString()
+
+        switch (e.data.data) {
+
+          case 'scroll_up':
+            // 써도 안 먹히는 경우 아래 내용을 수정
+            myFullpage.moveSectionUp();
+            jQuery_bs.fn.fullpage.moveSectionUp();
+            break;
+          case 'scroll_down':
+            myFullpage.moveSectionDown();
+            jQuery_bs.fn.fullpage.moveSectionDown();
+            break;
+        }
+      }
+
+    }
+  })
+</script>
