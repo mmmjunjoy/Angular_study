@@ -1,0 +1,10 @@
+ 
+ <!-- ng-container &  ng-tempalte 쓰임 구별  -->
+ 
+ 
+ <ng-container *ngIf="ModalService.essential_mode">
+        <app-essential-setup></app-essential-setup>
+  </ng-container>
+  <ng-container *ngIf="!ModalService.essential_mode">
+    <div>ng-template & ng-container</div>
+  </ng-container>
