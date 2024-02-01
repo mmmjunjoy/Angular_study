@@ -1,0 +1,19 @@
+
+<!-- angular 에서는, oninput()으로 값변경 상태를 관리하는 것이 아니라, ngModelChange라는 angular전용의 디렉티브가 존재했다. -->
+
+<!-- 이는, 이메일 형식 체크와 같은 유효성검사를 할때 유용하게 사용될것이다.
+:값이 변경될때마다 감지되기 때문. -->
+
+
+<!-- email input 추가 -->
+<hr class="center_line">
+<div class="initial_section_input_box">
+  <div class="initial_input_label">이메일 주소</div>
+  <div class="initial_section_email">
+
+    <input class="shopInfo_input_text_1" type="email" placeholder="ID@E-mail.com" [(ngModel)]='new_email'
+      (ngModelChange)="testfunction()">
+
+  </div>
+
+</div>
