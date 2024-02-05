@@ -1,0 +1,42 @@
+<!-- class명 지정은 중요 - ex) section-->
+<div style="padding-top:150px;" class="section">
+  <div style="font-size:30px; padding-top: 30px; margin-bottom:20px; text-align:center">REVIEW</div>
+  <div style="width:85%; margin:0 auto;" class="widget" data-code="" data-value="{$product_no}"></div>
+</div>
+<!-- /-->
+
+
+
+
+
+<!-- fullpage_script -->
+<script type="text/javascript">
+  window.addEventListener('message', function (e) {
+    if (e.data.from == 'widget') {
+
+      if (e.data.result != 'error') {
+        let idx = e.data.idx;
+        let id = 'widget_' + idx.toString();
+        switch (e.data.data) {
+          case 'scroll_up':
+
+            if (document.body.classList.contains("fp-viewing-4")) { temp = true; }
+            else { temp = false; }
+            if (temp == true) {
+              fullpage_api.moveSectionUp();
+              break;
+            }
+          case 'scroll_down':
+
+            if (document.body.classList.contains("fp-viewing-4")) { temp = true; }
+            else { temp = false; }
+            if (temp == true) {
+              fullpage_api.moveSectionDown();
+              break;
+            }
+        }
+      }
+    }
+  })
+</script>
+<!-- /fullpage_script --->
