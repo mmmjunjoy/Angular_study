@@ -36,6 +36,34 @@ update = 487989;
 // 이로 인해, const와 let이 탄생 한 것이다.
 
 
+
+// function함수
+
+// var 응용
+
+var good = 123;
+
+function goodss() {
+  var good = 12345;
+  console.log("good", good)
+}
+
+this.goodss();
+
+
+function twotwo() {
+  good = 12345567;
+  console.log("good2",good)
+}
+
+this.twotwo()
+
+
+
+
+
+
+
 // var 의 호이스팅은
 
 // 초기화된다. -> 즉 , undefined상태
