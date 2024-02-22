@@ -14,8 +14,7 @@
 
 
 
-
-letfunctions(){
+findindexsfunctions(){
         for(let i = 0 ; i < this.one.selected.length; i++){
             let item = this.one.selected[i]
             if(this.search_type == 'product'){
