@@ -52,7 +52,7 @@ this.goodss();
 
 
 function twotwo() {
-  good = 12345567;
+  var good = 12345567;
   console.log("good2",good)
 }
 
