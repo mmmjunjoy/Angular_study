@@ -20,3 +20,26 @@
         }
 
     </script>
+
+
+
+
+<!--  queryset으로 생긴 문제 해결 -->
+
+<!-- review.product.product_option_name.id  로 접근할 경우  none오류가 생긴다-->
+<!-- 이는 쿼리셋을 template내에서 처리를 하려고 해서 생긴문제라 , 
+두가지의 방법이 있다.
+1. py 파일에서 던져줄때부터 , queryset을 해결을 하고 값을 던져주는 방식
+2. template내에서 queryset을 처리해주는 방식이 있을것이다.
+ -->
+
+ <!-- 아래는 2번의 방법이다. 
+all 을 통해 objects.all의 역할을 수행해준 후 
+0을 통해 인덱스 접근을 해준다.
+그러고 나서, column 명을 붙여주어 원하는 값을 추출하게 된다-->
+
+<div id="popupnew" style="display: none; color: blue;">
+    {{review.product.product_name}}
+    {{review.product.product_option_name.all.0.option_name}}
+
+</div>
