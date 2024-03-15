@@ -1,0 +1,65 @@
+
+
+<!-- fulllpage웹에 나의 모듈도 fullpage가 적용되는 방법에 대한 정리이다 -->
+
+<!-- fn.fullpage.moveSection 을 사용하면, 페이지 스크롤이 가능해지는데 -->
+
+<!-- 앞에 변수가 중요하다. 즉 fn앞에 붙는 -->
+
+<!-- 이것을 찾는 방법은,  -->
+
+<!-- var bsMainFullPage = $bs('#fullpage'); --> 
+
+<!-- 위와 같이 선언되어있는 부분이 있을것이며, fullpage js파일이 있을 것이다 -->
+
+
+<!-- 중요코드는 다음과 같다 -->
+
+<!-- 1. script -->
+
+<!-- script코드 -->
+<script type="text/javascript">
+  //let asd = $.fn.fullpage;
+  //let good = true;
+  window.addEventListener('message', function (e) {
+    if (e.data.from == 'my class name') {
+      //if(!good) return;
+      if (e.data.result != 'error') {
+        let idx = e.data.idx
+        let id = 'my class name_' + idx.toString()
+        switch (e.data.data) {
+          case 'scroll_up':
+
+            if (document.body.classList.contains("document.body로 알아봐야한다. -> name이 뭔지")) { temp = true; }
+            else { temp = false; }
+
+            if (temp == true) {
+              console.log("up!")
+              console.log($bs.fn.fullpage)
+              $bs.fn.fullpage.moveSectionUp();
+              //good = false;
+              //setTimeout(() => good = true, 1000);
+              break;
+            }
+          case 'scroll_down':
+
+            if (document.body.classList.contains("document.body로 알아봐야한다. -> name이 뭔지")) { temp = true; }
+            else { temp = false; }
+
+            if (temp == true) {
+              console.log("down!")
+              $bs.fn.fullpage.moveSectionDown();
+              //good = false;
+              //setTimeout(() => good = true, 1000);
+              break;
+            }
+        }
+      }
+    }
+  })
+</script>
+<!-- /script코드 -->
+
+
+
+<!-- 해당 웹페이지 위치에서 , console창에 document.body를 검색하여 class고유명을 찾는다 -->
